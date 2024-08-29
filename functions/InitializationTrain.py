@@ -16,7 +16,6 @@ def parse_args():
     parser.add_argument("--norm_use", default=True, type=bool)
     parser.add_argument("--lrelu_use", default=True, type=bool)
     parser.add_argument("--lrelu_slope", default=0.1, type=float)
-    parser.add_argument("--batch_mode", default='G', type=str)
     parser.add_argument("--zero_padding", default=True, type=bool)
     parser.add_argument("--initial_channel_G", default=48, type=int)
 
@@ -32,14 +31,11 @@ def parse_args():
     parser.add_argument("--lr_decay_epoch", default = 5, type=int)
     parser.add_argument("--lr_decay_rate", default = 0.95, type=float)
     ##
-    parser.add_argument("--dist", default=10, type=int)
     parser.add_argument("--dist_min", default=1.353, type=int)
     parser.add_argument("--dist_max", default=5.413, type=int)
     
     parser.add_argument("--pix_min", default=0.05, type=int)
     parser.add_argument("--pix_max", default=0.25, type=int)
-    parser.add_argument("--pix_fix", default=False, type=bool)
-
 
     ##
     parser.add_argument("--phase_normalize", default = 2*pi, type=float)
@@ -49,8 +45,7 @@ def parse_args():
     parser.add_argument("--pixel_size", default=6.5e-6, type=float)
     parser.add_argument("--numerical_aperture", default = 0.4, type=int)
     parser.add_argument("--magnification", default = 300/9, type=int)  
-
-    parser.add_argument("--mode", default='t', type=str)
-    parser.add_argument("--network", default='Res', type=str)
+    
+    parser.add_argument("--methods", default='proposed', type=str)
 
     return parser.parse_args()

@@ -62,11 +62,15 @@ if __name__ == '__main__':
 
     scaler = operators.Scaler.ScalerPeff(args).to(device=device)
   
-    if args.network == 'Res':
-        if args.mode == 'o':
-            Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=1,out_channel=2).to(device=device)
-        elif args.mode == 't':
-            Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=2,out_channel=2).to(device=device)
+    if args.methods == 'baseline':
+        
+        Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=1,out_channel=2).to(device=device)
+        args.fix_peff_flag = True
+        
+    elif args.methods == 'proposed':
+        
+        Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=2,out_channel=2).to(device=device)
+        args.fix_peff_flag = False
 
     propagator = operators.ForwardModels.EffectiveForward(args).to(device = device)
 
@@ -100,13 +104,16 @@ if __name__ == '__main__':
         effective_dist  = torch.rand(size=(args.batch_size, 1, 1, 1)).to(device=device).float()
         effective_dist = (args.dist_max - args.dist_min)*effective_dist + args.dist_min
 
-        real_field, peff = scaler(real_amplitude,real_phase,effective_pix, rand_crop=True,fix_peff = args.pix_fix)
+        real_field, peff = scaler(real_amplitude,real_phase,effective_pix, rand_crop=True, fix_peff = args.fix_peff_flag)
         
         holo = propagator(real_field,effective_dist,peff)
 
-        if args.mode == 'o':
+        if args.methods == 'baseline':
+            
             re_fake, im_fake = Generator(holo)
-        elif args.mode == 't':
+            
+        elif args.methods == 'proposed':
+            
             field_noise = propagator(holo,effective_dist,peff, return_O = True,back = True)
             re_field = field_noise.real
             im_field = field_noise.imag
@@ -166,13 +173,13 @@ if __name__ == '__main__':
                     real_peff = real_pix*real_na / args.wavelength / real_mag
                     real_deff = real_distance*real_na**2 / args.wavelength / real_mag**2
 
-                    if args.mode == 'o':
+                    if args.methods == 'baseline':
                         re_fake, im_fake = Generator(holo)
                         fake_field = re_fake + 1j*im_fake
                         fake_amplitude = torch.abs(fake_field)
                         fake_phase = torch.angle(fake_field)
 
-                    elif args.mode == 't':
+                    elif args.methods == 'proposed':
                         field_noise = propagator(holo,real_deff*1e-3,real_peff, return_O = True,back = True)
                         re_field = field_noise.real
                         im_field = field_noise.imag

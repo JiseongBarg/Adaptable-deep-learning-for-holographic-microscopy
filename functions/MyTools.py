@@ -19,8 +19,6 @@ def center_crop(H, size):
         Nh, Nw = H.size()
         return H[(Nh - size)//2 : (Nh+size)//2, (Nw - size)//2 : (Nw+size)//2]
 
-    
-
 def random_crop(H, size):
     
     if H.dim()>3:

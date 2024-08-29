@@ -16,7 +16,6 @@ class Field_Generator_Resblk(nn.Module):
         self.input_channel = input_channel
         self.output_channel = out_channel
         self.lrelu_use = args.lrelu_use
-        self.batch_mode=args.batch_mode
 
         c1 = args.initial_channel_G
         c2 = c1*2
