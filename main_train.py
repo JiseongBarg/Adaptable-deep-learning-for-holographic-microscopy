@@ -65,15 +65,16 @@ if __name__ == '__main__':
     if args.methods == 'baseline':
         
         Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=1,out_channel=2).to(device=device)
+        propagator = operators.ForwardModels.ConventionalForward(args).to(device = device)
         args.fix_peff_flag = True
         
     elif args.methods == 'proposed':
         
         Generator = operators.Networks.Field_Generator_Resblk(args,input_channel=2,out_channel=2).to(device=device)
+        propagator = operators.ForwardModels.EffectiveForward(args).to(device = device)
         args.fix_peff_flag = False
 
-    propagator = operators.ForwardModels.EffectiveForward(args).to(device = device)
-
+    
     # optimizer
     op_G = torch.optim.Adam(Generator.parameters(), lr=args.lr_gen, betas=(0.5, 0.9))
 
@@ -105,15 +106,15 @@ if __name__ == '__main__':
         effective_dist = (args.dist_max - args.dist_min)*effective_dist + args.dist_min
 
         real_field, peff = scaler(real_amplitude,real_phase,effective_pix, rand_crop=True, fix_peff = args.fix_peff_flag)
-        
-        holo = propagator(real_field,effective_dist,peff)
 
         if args.methods == 'baseline':
             
+            holo = propagator(real_field,effective_dist)
             re_fake, im_fake = Generator(holo)
             
         elif args.methods == 'proposed':
             
+            holo = propagator(real_field,effective_dist,peff)            
             field_noise = propagator(holo,effective_dist,peff, return_O = True,back = True)
             re_field = field_noise.real
             im_field = field_noise.imag
@@ -122,11 +123,13 @@ if __name__ == '__main__':
         re_real = real_field.real
         im_real = real_field.imag
 
-        loss_field = 0.5*(criterion_l1(re_fake,re_real) + criterion_l1(im_fake,im_real)) +0.5*(criterion_l2(re_fake,re_real) + criterion_l2(im_fake,im_real))
+        loss_field = 0.5*(criterion_l1(re_fake,re_real) + criterion_l1(im_fake,im_real)) + 0.5*(criterion_l2(re_fake,re_real) + criterion_l2(im_fake,im_real))
 
         op_G.zero_grad()
+        
         G_loss = 100*loss_field
         G_loss.backward()
+        
         op_G.step()
 
         loss_sum_G += G_loss.item()
@@ -139,7 +142,6 @@ if __name__ == '__main__':
             
             print(f"[{it+1}/{args.iterations}] : L1_loss: {loss_sum_G}")
             
-            # path for saving result
             functions.MyTools.make_path(saving_path)
             functions.MyTools.make_path(os.path.join(saving_path, 'generated'))
             
@@ -174,12 +176,14 @@ if __name__ == '__main__':
                     real_deff = real_distance*real_na**2 / args.wavelength / real_mag**2
 
                     if args.methods == 'baseline':
+                        
                         re_fake, im_fake = Generator(holo)
                         fake_field = re_fake + 1j*im_fake
                         fake_amplitude = torch.abs(fake_field)
                         fake_phase = torch.angle(fake_field)
 
                     elif args.methods == 'proposed':
+                        
                         field_noise = propagator(holo,real_deff*1e-3,real_peff, return_O = True,back = True)
                         re_field = field_noise.real
                         im_field = field_noise.imag

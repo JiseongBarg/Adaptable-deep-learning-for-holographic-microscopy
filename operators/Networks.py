@@ -3,13 +3,14 @@ from torch import nn
 from functions.InitializationModel import weights_initialize_xavier_normal as weights_initialize
 import torch.nn.functional as F
 
-############################## distance and field generator each ##########################################
-
 
 class Field_Generator_Resblk(nn.Module):
+    """
+    Complex-valued field generator with Residual block
+    """
 
-    
     def __init__(self, args, input_channel=1, out_channel = 2):
+        
         super(Field_Generator_Resblk, self).__init__()
 
         self.use_norm = args.norm_use
@@ -54,11 +55,11 @@ class Field_Generator_Resblk(nn.Module):
         self.l91 = ResBlk(dim_in=c2, dim_out=c1, normalize = True)
         self.l90 = ResBlk(dim_in=c1, dim_out=c1, normalize = True)
         
-        if self.output_channel == 2:
-            self.conv_out_amplitdue = nn.Conv2d(in_channels=c1, out_channels=1, kernel_size=(1, 1), padding=0)
-            self.conv_out_phase = nn.Conv2d(in_channels=c1, out_channels=1, kernel_size=(1, 1), padding=0)
-            self.SE_out_amplitude = SELayer(channel=c1)
-            self.SE_out_phase = SELayer(channel=c1)
+        self.conv_out_amplitdue = nn.Conv2d(in_channels=c1, out_channels=1, kernel_size=(1, 1), padding=0)
+        self.conv_out_phase = nn.Conv2d(in_channels=c1, out_channels=1, kernel_size=(1, 1), padding=0)
+        
+        self.SE_out_amplitude = SELayer(channel=c1)
+        self.SE_out_phase = SELayer(channel=c1)
             
         self.apply(weights_initialize)
         self.mpool0 = nn.AvgPool2d(kernel_size=2, stride=2)
@@ -91,22 +92,22 @@ class Field_Generator_Resblk(nn.Module):
         l9 = torch.cat([l8, self.SE1(l1)], dim=1)
         out = self.l90(self.l91(l9))
 
-        if self.output_channel == 2:
-            out_amplitude = self.conv_out_amplitdue(self.SE_out_amplitude(out))
-            out_phase = self.conv_out_phase(self.SE_out_phase(out))
+        out_amplitude = self.conv_out_amplitdue(self.SE_out_amplitude(out))
+        out_phase = self.conv_out_phase(self.SE_out_phase(out))
 
-            return out_amplitude, out_phase
+        return out_amplitude, out_phase
         
     
-
-##################################################################################
 class SELayer(nn.Module):
     '''
-    Squeeze-and-excitation network used in G_theta and D_eta.
+    Squeeze-and-excitation network used in Generator.
     '''
     def __init__(self, channel, reduction=16):
+        
         super(SELayer, self).__init__()
+        
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        
         self.fc = nn.Sequential(
             nn.Linear(channel, channel // reduction, bias=False),
             nn.ReLU(inplace=True),
@@ -115,60 +116,18 @@ class SELayer(nn.Module):
         )
 
     def forward(self, x):
+        
         b, c, _, _ = x.size()
         y = self.avg_pool(x).view(b, c)
         y = self.fc(y).view(b, c, 1, 1)
+        
         return x * y.expand_as(x)
 
-
-class CBR(nn.Module):
-    '''
-    Convolution-norm-leaky_relu block.
-    batch_mode:
-    'I': Instance normalizationGro
-    'B': Batch normalization
-    'G': Group normalization
-    lrelu_use: defalut is True. If False, ReLU is used.
-    Other parameters: used for 2D-convolution layer.
-    '''
-
-    def __init__(self, in_channel, out_channel, padding=1, use_norm=True, kernel=3, stride=1
-                 , lrelu_use=False, slope=0.1, batch_mode='G', rate=1):
-        super(CBR, self).__init__()
-        self.in_channel = in_channel
-        self.out_channel = out_channel
-        self.use_norm = use_norm
-        self.lrelu = lrelu_use
-
-        self.Conv = nn.Conv2d(self.in_channel, self.out_channel, kernel_size=(kernel, kernel), stride=(stride, stride),
-                                  padding=padding, dilation=(rate, rate))
-
-        if batch_mode == 'I':
-            self.Batch = nn.InstanceNorm2d(self.out_channel)
-        elif batch_mode == 'G':
-            self.Batch = nn.GroupNorm(self.out_channel//16, self.out_channel)
-        else:
-            self.Batch = nn.BatchNorm2d(self.out_channel)
-
-        self.lrelu = nn.LeakyReLU(negative_slope=slope)
-        self.relu = nn.ReLU()
-
-    def forward(self, x):
-
-        if not self.lrelu:
-            out = self.relu(self.Batch(self.Conv(x)))
-
-        else:
-            if self.use_norm:
-                out = self.lrelu(self.Batch(self.Conv(x)))
-            else:
-                out = self.lrelu(self.Conv(x))
-
-        return out
-
-
-
 class ResBlk(nn.Module):
+    '''
+    Residual Block with leakyReLU and instance normalization    
+    '''
+    
     def __init__(self, dim_in, dim_out, actv=nn.LeakyReLU(0.2),
                  normalize=False, downsample=False):
         super().__init__()

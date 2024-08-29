@@ -25,14 +25,18 @@ class DatasetBarg(Dataset):
         self.data_type = data_type
 
         if self.data_type == 'inten':
+            
             self.data_path = os.path.join(root, image_set, 'inten')
+            
         else:
+            
             self.data_path = os.path.join(root,image_set,'field')
 
         self.matdata_list = glob(os.path.join(self.data_path,'*.mat'))
         self.matdata_list = [os.path.basename(i) for i in self.matdata_list]
 
     def __len__(self) -> int:
+        
         return len(self.matdata_list)
 
     def __getitem__(self, index: int):
@@ -54,6 +58,7 @@ class DatasetBarg(Dataset):
             pixel_size =self.load_matfile(os.path.join(self.data_path,self.matdata_list[index]))['pix']
             magnification =self.load_matfile(os.path.join(self.data_path,self.matdata_list[index]))['magn']
             na =self.load_matfile(os.path.join(self.data_path,self.matdata_list[index]))['NA']
+            
             data_inten = self.MM_norm(self.transform(data_inten))
             distance = torch.Tensor(distance).float()
             pixel_size = torch.Tensor(pixel_size)

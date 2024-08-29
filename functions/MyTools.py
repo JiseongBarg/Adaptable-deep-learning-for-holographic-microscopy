@@ -19,23 +19,6 @@ def center_crop(H, size):
         Nh, Nw = H.size()
         return H[(Nh - size)//2 : (Nh+size)//2, (Nw - size)//2 : (Nw+size)//2]
 
-def random_crop(H, size):
-    
-    if H.dim()>3:
-        batch, channel, Nh, Nw = H.size()
-        x_off = int(np.floor(np.random.rand() * (Nh-size)) + size/2)
-        y_off = int(np.floor(np.random.rand() * (Nw-size)) + size/2)
-        return H[:, :, (x_off - size//2) : (x_off+size//2), (y_off - size//2) : (y_off+size//2)]
-    elif H.dim()>2:
-        channel, Nh, Nw = H.size()
-        x_off = int(np.floor(np.random.rand() * (Nh-size)) + size/2)
-        y_off = int(np.floor(np.random.rand() * (Nw-size)) + size/2)
-        return H[ :, (x_off - size//2) : (x_off+size//2), (y_off - size//2) : (y_off+size//2)]
-    else:
-        Nh, Nw = H.size()
-        x_off = int(np.floor(np.random.rand() * (Nh-size)) + size/2)
-        y_off = int(np.floor(np.random.rand() * (Nw-size)) + size/2)
-        return H[(x_off - size//2) : (x_off+size//2), (y_off - size//2) : (y_off+size//2)]
 
 def center_crop_numpy(H, size):
     Nh = H.shape[0]
