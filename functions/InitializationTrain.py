@@ -9,9 +9,9 @@ def parse_args():
     parser.add_argument("--device",default= 0, type=int, help="number of device [0,1]")
 
     # data
-    parser.add_argument("--data_root",default= 'C:/Users/barg/Desktop/vscode/data/rectum_real_dist', type=str, help="Path to data folder")
-    parser.add_argument("--result_root",default = 'D:/results', type=str, help="Path to save folder")
-    parser.add_argument("--experiment", default = 'test_git2',type=str, help="experiment name")
+    parser.add_argument("--data_root",default= './Datasets', type=str, help="Path to data folder")
+    parser.add_argument("--result_root",default = './results_train', type=str, help="Path to save folder")
+    parser.add_argument("--experiment", default = 'GitTrain',type=str, help="experiment name")
 
     # Parameters for network
     parser.add_argument("--norm_use", default=True, type=bool)
@@ -25,7 +25,7 @@ def parse_args():
     parser.add_argument("--batch_size", default = 4, type=int)
     parser.add_argument("--output_channel", default = 2, type=int)
     parser.add_argument("--crop_size", default = 256, type=int)
-    parser.add_argument("--iterations", default = 250, type=int)
+    parser.add_argument("--iterations", default = 100, type=int)
     parser.add_argument("--chk_iter", default = 50, type=int)
     parser.add_argument("--lr_gen", default = 1e-4, type=float)
     parser.add_argument("--lr_decay_epoch", default = 5, type=int)
