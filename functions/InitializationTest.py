@@ -10,9 +10,12 @@ def parse_args():
 
     # data
     parser.add_argument("--data_root",default= './Datasets/test_fig5', type=str, help="Path to data folder")
+    parser.add_argument("--tissue_type",default= 'colon', type=str, help="Path to data folder")
     parser.add_argument("--result_root",default = './Test', type=str, help="Path to save folder")
     parser.add_argument("--experiment", default = 'MainFig5',type=str, help="experiment name")
-    parser.add_argument("--pretrained", default = 'D:/Synology_JS/Mooo Workspace_JS/1. Research Project/2024_ongoing_Generalization of phase retrieval_JSBarg_CSLee/Pretrained',type=str, help="experiment name")
+    parser.add_argument("--pretrained", 
+                        default = 'D:/Synology_JS/Mooo Workspace_JS/1. Research Project/2024_ongoing_Generalization of phase retrieval_JSBarg_CSLee/Pretrained',
+                        type=str, help="Path to pretrained network weights")
     
 
     # Parameters for network

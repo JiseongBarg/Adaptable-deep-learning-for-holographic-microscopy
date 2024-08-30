@@ -115,9 +115,9 @@ if __name__ == '__main__':
         elif args.methods == 'proposed':
             
             holo = propagator(real_field,effective_dist,peff)            
-            field_noise = propagator(holo,effective_dist,peff, return_O = True,back = True)
-            re_field = field_noise.real
-            im_field = field_noise.imag
+            field_w_artifact = propagator(holo,effective_dist,peff, return_O = True,back = True)
+            re_field = field_w_artifact.real
+            im_field = field_w_artifact.imag
             re_fake,im_fake = Generator(torch.cat([re_field,im_field],dim=1))
 
         re_real = real_field.real
@@ -184,9 +184,9 @@ if __name__ == '__main__':
 
                     elif args.methods == 'proposed':
                         
-                        field_noise = propagator(holo,real_deff*1e-3,real_peff, return_O = True,back = True)
-                        re_field = field_noise.real
-                        im_field = field_noise.imag
+                        field_w_artifact = propagator(holo,real_deff*1e-3,real_peff, return_O = True,back = True)
+                        re_field = field_w_artifact.real
+                        im_field = field_w_artifact.imag
                         re_fake, im_fake = Generator(torch.cat([re_field,im_field],dim=1))
                         fake_field = re_fake + 1j*im_fake
                         fake_amplitude = torch.abs(fake_field)

@@ -37,6 +37,17 @@ def make_path(path):
     import os
     if not os.path.isdir(path):
         os.mkdir(path)
+        
+        
+def RI2AP(Real, Imag):
+    
+    field = Real + 1j*Imag
+    Amplitude = torch.abs(field)
+    Phase = torch.angle(field)
+    
+    return Amplitude, Phase
+
+
 
 def savefig(save_path, results_data,args):
     
@@ -59,7 +70,7 @@ def savefig(save_path, results_data,args):
     
     plt.subplot(2, 3, 5)
     plt.title('gt phase')
-    plt.imshow(real_pha, cmap='hot',vmax = 2.5,vmin = 0)
+    plt.imshow(real_pha, cmap='hot',vmax = 2.5, vmin = -1)
     plt.axis('off')
     plt.colorbar()
     
@@ -71,7 +82,7 @@ def savefig(save_path, results_data,args):
     
     plt.subplot(2, 3, 6)
     plt.title('recon phase')
-    plt.imshow(recon_pha, cmap='hot',vmax = 2.5,vmin = 0)
+    plt.imshow(recon_pha, cmap='hot',vmax = 2.5,vmin = -1)
     plt.axis('off')
     plt.colorbar()
     
