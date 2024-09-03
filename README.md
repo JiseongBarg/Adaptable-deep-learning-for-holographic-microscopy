@@ -57,17 +57,31 @@ please follow these steps:
 3. **Run the `main_test.py`**
   - Execute the following command in your terminal, replacing the method and tissue type as needed:
    ```
-   python test_main.py --methods baseline --tissue_type appendix
+   python main_test.py --methods proposed --tissue_type appendix
    ```
 
+4. **Reconstruction Results**
+  - The reconstruction results can be found in the `/Test` directory after the script has completed running.
 
+# Train
 
+The data for training both methods will be available from the corresponding author upon reasonable request.
 
+After downloading the training data, place it in the `/Datasets/train/field directory`.
 
+1. **Select Method:**
+  - Choose the method (`baseline` or `proposed`)
 
-
-
-
+2. **Run the `main_train.py`**
+   - Execute the following command in your terminal, replacing the method and other hyper-parameters as needed.
+   
+     The command below utilizes the hyper-parameters used in the paper:
+   ```
+   python main_train.py --methods proposed --batch_size 16 --iterations 50000 --chk_iter 500 --dist_min 1.353 --dist_max 5.413 --pix_min 0.05 --pix_max 0.25
+   ```
+   
+3. **Training Results**
+  - The results from the training process will be saved in the '/Train' directory after the script completes its execution.
 
 
 
