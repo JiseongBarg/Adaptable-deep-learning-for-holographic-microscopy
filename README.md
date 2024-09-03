@@ -73,7 +73,7 @@ please follow these steps:
 
 The data for training both methods will be available from the corresponding author upon reasonable request.
 
-After downloading the training data, place it in the `/Datasets/train/field directory`.
+After downloading the training data, place it in the `/Datasets/train/field` directory.
 
 1. **Select Method:**
    - Choose the method (`baseline` or `proposed`)
