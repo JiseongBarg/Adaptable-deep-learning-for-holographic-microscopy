@@ -1,6 +1,16 @@
 # Generalization of deep learning based holographic reconstruction for histopathology
 
-We provide pytorch(python) implementations of **Generalization of deep learning based holographic reconstruction for histopathology**. This code was written by Jiseong Barg. Last update: 2024.09.04
+
+<div align=center>	
+We provide pytorch(python) implementations of <b>Generalization of deep learning based holographic reconstruction for histopathology</b>.
+<br>
+<br>
+This code was written by <b>Jiseong Barg</b>.
+<br>
+<br>
+Last update: 2024.09.04
+</div>
+
 
 # Overview
 
@@ -12,5 +22,19 @@ with simpler and more practical setups compared to traditional interferometric s
  By leveraging back-propagation and reparameterization, the proposed method enhances both shape and system adaptability, facilitating reliable phase reconstruction across diverse configurations.
  Validation with limited training data from rectum tissue demonstrated robust phase reconstruction performance across various configuration, even with the cancerous rectum tissue,
  underscoring the method's adaptability to OOD data and its potential for clinical and research applications.
+ 
+
 
  ![Overview of proposed approach](./image/main1_latest.png)
+
+# Environment requirements
+
+The codes was tested on Windows 10 with Python and PyTorch. Packages required to reproduce the results can be found in `requirements.txt`.
+The following software / hardware is tested and recommended:
+
+* Python >= 3.9
+* CUDA 11.8
+* cuDNN 8.4.1
+* Intel i5-11400
+* Nvidia RTX3080 Ti
+* RAM >= 80 GB
