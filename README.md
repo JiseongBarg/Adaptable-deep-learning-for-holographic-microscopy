@@ -29,8 +29,9 @@ with simpler and more practical setups compared to traditional interferometric s
 
 # Environment requirements
 
-The codes was tested on Windows 10 with Python and PyTorch. Packages required to reproduce the results can be found in `requirements.txt`.
-The following software / hardware is tested and recommended:
+The code was tested on Windows 10 with Python and PyTorch. The required packages to reproduce the results can be found in the `requirements.txt` file. 
+
+The following software and hardware configurations were tested and are recommended:
 
 * Python >= 3.9
 * CUDA 11.8
@@ -38,6 +39,11 @@ The following software / hardware is tested and recommended:
 * Intel i5-11400
 * Nvidia RTX3080 Ti
 * RAM >= 80 GB
+
+To install the necessary packages, please use the following command:
+```
+pip install -r requirements.txt
+```
 
 # Test
 
