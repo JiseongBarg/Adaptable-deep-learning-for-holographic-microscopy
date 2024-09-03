@@ -38,3 +38,47 @@ The following software / hardware is tested and recommended:
 * Intel i5-11400
 * Nvidia RTX3080 Ti
 * RAM >= 80 GB
+
+# Test
+
+To test the baseline and proposed methods and reproduce results depicted in figure 5,
+
+please follow these steps:
+
+1. **Download Pretrained Weights**
+   - Access the pretrained weights from [Google Drive](https://drive.google.com/drive/folders/1iVlmMHpS6WMewwPyzc2lezP5TVCSHDiJ?usp=sharing).
+   - Move the downloaded weights to the directory  `/Train/PretrainedModels`.
+  
+2. **Select Method and Tissue Type:**
+  - Choose the method (`baseline` or `proposed`) and the tissue type (`colon` or `appendix`) for testing.
+
+    These options correspond to the conditions used in Figure 5.
+
+3. **Run the `main_test.py`**
+  - Execute the following command in your terminal, replacing the method and tissue type as needed:
+   ```
+   python test_main.py --methods baseline --tissue_type appendix
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
