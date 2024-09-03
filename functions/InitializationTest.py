@@ -14,7 +14,7 @@ def parse_args():
     parser.add_argument("--result_root",default = './Test', type=str, help="Path to save folder")
     parser.add_argument("--experiment", default = 'MainFig5',type=str, help="experiment name")
     parser.add_argument("--pretrained", 
-                        default = 'D:/Synology_JS/Mooo Workspace_JS/1. Research Project/2024_ongoing_Generalization of phase retrieval_JSBarg_CSLee/Pretrained',
+                        default = './Train/PretrainedModels',
                         type=str, help="Path to pretrained network weights")
     
 
