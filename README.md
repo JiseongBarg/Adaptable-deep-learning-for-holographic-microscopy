@@ -2,7 +2,8 @@
 
 
 <div align=center>	
-We provide pytorch(python) implementations of <b>Generalization of deep learning based holographic reconstruction for histopathology</b>.
+We provide pytorch(python) implementations of <b>Adaptable deep learning for holographic microscopy: A case study on tissue-type and system variability in label-free histopathology
+</b>.
 <br>
 <br>
 This code was written by <b>Jiseong Barg</b>.
@@ -14,14 +15,7 @@ Last update: 2024.09.04
 
 # Overview
 
-Holographic microscopy has become a vital tool in the field of life sciences, offering detailed, label-free morphological imaging at the wavelength scale,
-with simpler and more practical setups compared to traditional interferometric systems.
- However, conventional phase retrieval methods encounter challenges such as instability, noise sensitivity, and data redundancy. 
- While deep learning (DL)-based approaches have demonstrated superior performance, they remain constrained by the out-of-distribution (OOD) problem.
- Here, we propose a novel DL-based holographic reconstruction method integrating back-propagation and a refined forward model with effective parameterization to overcome OOD problem.
- By leveraging back-propagation and reparameterization, the proposed method enhances both shape and system adaptability, facilitating reliable phase reconstruction across diverse configurations.
- Validation with limited training data from rectum tissue demonstrated robust phase reconstruction performance across various configuration, even with the cancerous rectum tissue,
- underscoring the method's adaptability to OOD data and its potential for clinical and research applications.
+Holographic microscopy has emerged as a vital tool in biomedicine, enabling visualization of microscopic morphological features of tissues and cells in a label-free manner. Recently, deep learning (DL)-based image reconstruction models have demonstrated state-of-the-art performance in holographic image reconstruction. However, their utility in practice is still severely limited as conventional training schemes could not properly handle out-of-distribution (OOD) data. Here, we leverage back-propagation operation and reparameterization of forward propagator to enable an adaptable image reconstruction model for histopathologic inspection. Only given with a training data set of rectum tissue images captured from a single imaging configuration, our scheme consistently shows high reconstruction performance even with the input hologram of different tissue types and imaging configurations. Furthermore, we demonstrate holographic reconstruction of characteristic features of cancerous tissues while a given data set is strictly confined to normal tissues. Our results suggest that the DL-based image reconstruction approaches, with sophisticated adaptation techniques, could offer an extensively generalizable solution for inverse mapping problems in imaging.
  
 
 
