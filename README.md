@@ -1,4 +1,4 @@
-# daptable deep learning for holographic microscopy: A case study on tissue-type and system variability in label-free histopathology
+# Adaptable deep learning for holographic microscopy: A case study on tissue-type and system variability in label-free histopathology
 
 
 <div align=center>	
